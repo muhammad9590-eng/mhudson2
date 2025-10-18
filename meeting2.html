@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KPI Dashboard - Complete Implementation Plan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 50px 40px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 2.8em;
+            margin-bottom: 15px;
+        }
+        .subtitle {
+            font-size: 1.4em;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+        .meta-info {
+            font-size: 1em;
+            opacity: 0.85;
+        }
+        .content {
+            padding: 40px;
+        }
+        .section {
+            margin-bottom: 50px;
+        }
+        .section-title {
+            color: #667eea;
+            font-size: 2em;
+            margin-bottom: 25px;
+            padding-bottom: 12px;
+            border-bottom: 3px solid #667eea;
+        }
+        .alert-box {
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            border: 3px solid #f59e0b;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        .alert-title {
+            color: #92400e;
+            font-size: 1.6em;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin: 25px 0;
+        }
+        .comparison-card {
+            background: white;
+            border: 3px solid;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid currentColor;
+        }
+        .card-title {
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .data-table thead {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .data-table th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+        .data-table td {
+            padding: 14px 15px;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: top;
+            font-size: 0.9em;
+        }
+        .data-table tr:hover {
+            background: #f8f9ff;
+        }
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: 600;
+            display: inline-block;
+            margin: 2px;
+        }
+        .key-change {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 15px 20px;
+            margin: 12px 0;
+            border-radius: 6px;
+        }
+        .key-change-title {
+            font-weight: 600;
+            color: #92400e;
+            margin-bottom: 8px;
+        }
+        .highlight-box {
+            background: #f0f9ff;
+            border-left: 4px solid #3b82f6;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .info-box {
+            background: #f0f9ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 KPI Dashboard - Complete Implementation Plan</h1>
+            <div class="subtitle">Post October 16, 2025 Meeting - All Specifications with Sample Data</div>
+            <div class="meta-info">M Hudson Design | Built in Airtable | Complete Analysis & Visualizations</div>
+        </div>
+        
+        <div class="content">
+            <!-- Executive Summary -->
+            <section class="section">
+                <h2 class="section-title">🎯 Executive Summary</h2>
+                
+                <div class="alert-box">
+                    <div class="alert-title">🔥 CRITICAL BREAKTHROUGH: Utilization vs Billable Capacity Resolved</div>
+                    <div style="color: #7c2d12; line-height: 1.8; font-size: 1.05em;">
+                        <p style="margin-bottom: 15px;"><strong>The Core Problem:</strong> Matt wanted utilization to show "are we feeding our team 40 billable hours?" but textbook utilization measures billable÷(billable+non-billable).</p>
+                        <p style="margin-bottom: 15px;"><strong>The Solution:</strong> Create TWO separate metrics:</p>
+                        <ol style="margin: 10px 0 10px 30px;">
+                            <li><strong>Utilization Rate</strong> - Textbook definition (billable÷total hours)</li>
+                            <li><strong>Billable Capacity Rate</strong> - Actual billable vs 40-hour target</li>
+                        </ol>
+                        <p style="margin-top: 15px; padding: 12px; background: white; border-radius: 6px;"><strong>Impact:</strong> Matt gets BOTH industry-standard metric AND his operational metric.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- KPI 1 & 2 -->
+            <section class="section">
+                <h2 class="section-title">KPI 1 & 2: Utilization Rate & Billable Capacity</h2>
+                <div class="info-box">
+                    <strong>📅 Frequency:</strong> Weekly (Default: Last Week + MTD) | <strong>🎯 Target:</strong> 89% Utilization<br>
+                    <strong>📊 Built in:</strong> Airtable | <strong>🔗 Data Source:</strong> TrackIt sync
+                </div>
+                
+                <div class="key-change">
+                    <div class="key-change-title">FORMULAS:</div>
+                    <strong>Utilization:</strong> Billable Hours ÷ (Billable + Non-billable) × 100<br>
+                    <strong>Capacity:</strong> Billable Hours ÷ 40 × 100 (measures if we hit 40 billable hours target)
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Team / Employee</th>
+                            <th>Billable Hrs</th>
+                            <th>Non-Bill Hrs</th>
+                            <th>Total Hrs</th>
+                            <th>Utilization %</th>
+                            <th>Capacity %</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #fef3c7; font-weight: 600;">
+                            <td><strong>DESIGN TEAM</strong></td>
+                            <td>145</td>
+                            <td>15</td>
+                            <td>160</td>
+                            <td><strong>90.6%</strong></td>
+                            <td><strong>90.6%</strong></td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">✓ Above Target</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Alice</td>
+                            <td>40</td>
+                            <td>5</td>
+                            <td>45</td>
+                            <td>88.9%</td>
+                            <td>100%</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Excellent</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Bob</td>
+                            <td>35</td>
+                            <td>5</td>
+                            <td>40</td>
+                            <td>87.5%</td>
+                            <td>87.5%</td>
+                            <td><span class="status-badge" style="background: #f59e0b; color: white;">Below Target</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Elena</td>
+                            <td>38</td>
+                            <td>2</td>
+                            <td>40</td>
+                            <td>95.0%</td>
+                            <td>95.0%</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Excellent</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Frank</td>
+                            <td>32</td>
+                            <td>3</td>
+                            <td>35</td>
+                            <td>91.4%</td>
+                            <td>80.0%</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">Low Capacity</span></td>
+                        </tr>
+                        <tr style="background: #dbeafe; font-weight: 600;">
+                            <td><strong>DRAFTING TEAM</strong></td>
+                            <td>115</td>
+                            <td>25</td>
+                            <td>140</td>
+                            <td><strong>82.1%</strong></td>
+                            <td><strong>71.9%</strong></td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">⚠ Below Target</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Charlie</td>
+                            <td>30</td>
+                            <td>10</td>
+                            <td>40</td>
+                            <td>75.0%</td>
+                            <td>75.0%</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">Below</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Diana</td>
+                            <td>20</td>
+                            <td>20</td>
+                            <td>40</td>
+                            <td>50.0%</td>
+                            <td>50.0%</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Grace</td>
+                            <td>38</td>
+                            <td>2</td>
+                            <td>40</td>
+                            <td>95.0%</td>
+                            <td>95.0%</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Excellent</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Henry</td>
+                            <td>27</td>
+                            <td>8</td>
+                            <td>35</td>
+                            <td>77.1%</td>
+                            <td>67.5%</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">Below</span></td>
+                        </tr>
+                        <tr style="background: #f8f9ff; font-weight: 600;">
+                            <td><strong>COMPANY TOTAL</strong></td>
+                            <td>260</td>
+                            <td>40</td>
+                            <td>300</td>
+                            <td><strong>86.7%</strong></td>
+                            <td><strong>81.3%</strong></td>
+                            <td><span class="status-badge" style="background: #f59e0b; color: white;">⚠ Monitor</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <svg viewBox="0 0 800 300" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 8px; background: #fafafa; margin: 20px 0;">
+                    <text x="400" y="25" font-size="14" font-weight="600" text-anchor="middle" fill="#667eea">Weekly Utilization & Capacity by Team</text>
+                    <text x="200" y="60" font-size="12" font-weight="600" fill="#f59e0b">Design Team</text>
+                    <rect x="150" y="70" width="60" height="181" fill="#f59e0b"/>
+                    <rect x="220" y="70" width="60" height="181" fill="#3b82f6"/>
+                    <text x="180" y="265" font-size="11" text-anchor="middle">Util 90.6%</text>
+                    <text x="250" y="265" font-size="11" text-anchor="middle">Cap 90.6%</text>
+                    <text x="500" y="60" font-size="12" font-weight="600" fill="#10b981">Drafting Team</text>
+                    <rect x="450" y="88" width="60" height="163" fill="#f59e0b"/>
+                    <rect x="520" y="120" width="60" height="131" fill="#3b82f6"/>
+                    <text x="480" y="265" font-size="11" text-anchor="middle">Util 82.1%</text>
+                    <text x="550" y="265" font-size="11" text-anchor="middle">Cap 71.9%</text>
+                    <line x1="50" y1="251" x2="750" y2="251" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="50" y2="251" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="116" x2="750" y2="116" stroke="#ef4444" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="755" y="120" font-size="10" fill="#ef4444">89%</text>
+                </svg>
+            </section>
+
+            <!-- KPI 3 -->
+            <section class="section">
+                <h2 class="section-title">KPI 3: Effective Billing Rate (EBR)</h2>
+                <div class="info-box">
+                    <strong>📅 Frequency:</strong> Monthly (Rolling 90 days) + Project-Close | <strong>🎯 Target:</strong> ≥$120/hr<br>
+                    <strong>📊 Built in:</strong> Airtable | <strong>🔗 Data Source:</strong> QBO (revenue) + TrackIt (hours)
+                </div>
+                
+                <div class="key-change">
+                    <div class="key-change-title">FORMULA:</div>
+                    Total Revenue ÷ Total Paid Billable Hours (same timeframe)
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Team</th>
+                            <th>Total Revenue</th>
+                            <th>Billable Hours</th>
+                            <th>EBR ($/hr)</th>
+                            <th>Target</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Design Team</strong></td>
+                            <td>$186,750</td>
+                            <td>1,245</td>
+                            <td><strong>$150/hr</strong></td>
+                            <td>$140/hr</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Above Target</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Drafting Team</strong></td>
+                            <td>$98,560</td>
+                            <td>1,040</td>
+                            <td><strong>$95/hr</strong></td>
+                            <td>$90/hr</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Above Target</span></td>
+                        </tr>
+                        <tr style="background: #f8f9ff; font-weight: 600;">
+                            <td><strong>COMPANY</strong></td>
+                            <td>$285,310</td>
+                            <td>2,285</td>
+                            <td><strong>$125/hr</strong></td>
+                            <td>$120/hr</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">✓ Healthy</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <svg viewBox="0 0 800 250" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 8px; background: #fafafa; margin: 20px 0;">
+                    <text x="400" y="25" font-size="14" font-weight="600" text-anchor="middle" fill="#667eea">Monthly EBR by Team (Rolling 90 Days)</text>
+                    <line x1="50" y1="200" x2="750" y2="200" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="50" y2="200" stroke="#333" stroke-width="2"/>
+                    <rect x="100" y="80" width="150" height="120" fill="#10b981"/>
+                    <rect x="300" y="125" width="150" height="75" fill="#10b981"/>
+                    <rect x="500" y="95" width="150" height="105" fill="#3b82f6"/>
+                    <text x="175" y="70" font-size="13" font-weight="600" text-anchor="middle" fill="#10b981">$150/hr</text>
+                    <text x="375" y="115" font-size="13" font-weight="600" text-anchor="middle" fill="#10b981">$95/hr</text>
+                    <text x="575" y="85" font-size="13" font-weight="600" text-anchor="middle" fill="#3b82f6">$125/hr</text>
+                    <text x="175" y="225" font-size="12" text-anchor="middle">Design</text>
+                    <text x="375" y="225" font-size="12" text-anchor="middle">Drafting</text>
+                    <text x="575" y="225" font-size="12" text-anchor="middle">Company</text>
+                </svg>
+            </section>
+
+            <!-- KPI 4 -->
+            <section class="section">
+                <h2 class="section-title">KPI 4: Gross Margin %</h2>
+                <div class="info-box">
+                    <strong>📅 Frequency:</strong> Monthly + Project-Close | <strong>🎯 Target:</strong> 55-65%<br>
+                    <strong>📊 Built in:</strong> Airtable | <strong>🔗 Data Source:</strong> QBO | <strong>⚠️ COs tracked separately</strong>
+                </div>
+                
+                <div class="key-change">
+                    <div class="key-change-title">FORMULA:</div>
+                    (Revenue − Direct Costs) ÷ Revenue × 100
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Team / Project</th>
+                            <th>Revenue</th>
+                            <th>Direct Costs</th>
+                            <th>Margin $</th>
+                            <th>Margin %</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #fef3c7; font-weight: 600;">
+                            <td><strong>Design Team Avg</strong></td>
+                            <td>$62,250</td>
+                            <td>$18,050</td>
+                            <td>$44,200</td>
+                            <td><strong>71%</strong></td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Healthy</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Project A</td>
+                            <td>$28,000</td>
+                            <td>$5,600</td>
+                            <td>$22,400</td>
+                            <td>80%</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Excellent</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Project B</td>
+                            <td>$34,250</td>
+                            <td>$12,450</td>
+                            <td>$21,800</td>
+                            <td>64%</td>
+                            <td><span class="status-badge" style="background: #f59e0b; color: white;">OK</span></td>
+                        </tr>
+                        <tr style="background: #dbeafe; font-weight: 600;">
+                            <td><strong>Drafting Team Avg</strong></td>
+                            <td>$32,850</td>
+                            <td>$11,500</td>
+                            <td>$21,350</td>
+                            <td><strong>65%</strong></td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Good</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Project C</td>
+                            <td>$18,200</td>
+                            <td>$5,460</td>
+                            <td>$12,740</td>
+                            <td>70%</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Healthy</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Project D</td>
+                            <td>$14,650</td>
+                            <td>$6,040</td>
+                            <td>$8,610</td>
+                            <td>59%</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">Below</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <svg viewBox="0 0 800 250" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 8px; background: #fafafa; margin: 20px 0;">
+                    <text x="400" y="25" font-size="14" font-weight="600" text-anchor="middle" fill="#667eea">Monthly Gross Margin % by Team</text>
+                    <line x1="50" y1="200" x2="750" y2="200" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="50" y2="200" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="106" x2="750" y2="106" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="755" y="110" font-size="11" fill="#f59e0b">65%</text>
+                    <rect x="150" y="93" width="120" height="107" fill="#10b981"/>
+                    <rect x="320" y="118" width="120" height="82" fill="#10b981"/>
+                    <rect x="490" y="143" width="120" height="57" fill="#f59e0b"/>
+                    <text x="210" y="80" font-size="13" font-weight="600" text-anchor="middle" fill="#10b981">71%</text>
+                    <text x="380" y="105" font-size="13" font-weight="600" text-anchor="middle" fill="#10b981">65%</text>
+                    <text x="550" y="130" font-size="13" font-weight="600" text-anchor="middle" fill="#f59e0b">59%</text>
+                    <text x="210" y="225" font-size="12" text-anchor="middle">Design Avg</text>
+                    <text x="380" y="225" font-size="12" text-anchor="middle">Draft Avg</text>
+                    <text x="550" y="225" font-size="12" text-anchor="middle">Project D</text>
+                </svg>
+            </section>
+
+            <!-- KPI 5 -->
+            <section class="section">
+                <h2 class="section-title">KPI 5: Cash & Liquidity Runway</h2>
+                <div class="info-box">
+                    <strong>📅 Frequency:</strong> Monthly & Quarterly | <strong>🎯 Target:</strong> 60-90 days<br>
+                    <strong>📊 Built in:</strong> Airtable | <strong>🔗 Data Source:</strong> QBO (cash, AR, expenses)
+                </div>
+                
+                <div class="key-change">
+                    <div class="key-change-title">FORMULAS:</div>
+                    <strong>Daily Burn:</strong> Total Cash Outflows (90d) ÷ 90<br>
+                    <strong>Cash Runway:</strong> Current Cash ÷ Daily Burn<br>
+                    <strong>Liquidity Runway:</strong> (Cash + AR) ÷ Daily Burn
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Amount</th>
+                            <th>Daily Burn</th>
+                            <th>Runway (Days)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Cash Outflows (90d)</strong></td>
+                            <td>$166,500</td>
+                            <td>$1,850/day</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Current Cash</strong></td>
+                            <td>$142,500</td>
+                            <td>$1,850/day</td>
+                            <td><strong>77 days</strong></td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Healthy</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Accounts Receivable</strong></td>
+                            <td>$68,200</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                        </tr>
+                        <tr style="background: #f8f9ff; font-weight: 600;">
+                            <td><strong>Liquidity (Cash+AR)</strong></td>
+                            <td>$210,700</td>
+                            <td>$1,850/day</td>
+                            <td><strong>114 days</strong></td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Excellent</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <svg viewBox="0 0 800 250" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 8px; background: #fafafa; margin: 20px 0;">
+                    <text x="400" y="25" font-size="14" font-weight="600" text-anchor="middle" fill="#667eea">Quarterly Runway Analysis (Target: 60-90 days)</text>
+                    <line x1="50" y1="200" x2="750" y2="200" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="50" y2="200" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="125" x2="750" y2="125" stroke="#10b981" stroke-width="2" stroke-dasharray="5,5"/>
+                    <line x1="50" y1="75" x2="750" y2="75" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="755" y="130" font-size="11" fill="#10b981">60d</text>
+                    <text x="755" y="80" font-size="11" fill="#f59e0b">90d</text>
+                    <rect x="200" y="118" width="150" height="82" fill="#3b82f6"/>
+                    <rect x="450" y="63" width="150" height="137" fill="#10b981"/>
+                    <text x="275" y="105" font-size="13" font-weight="600" text-anchor="middle" fill="#3b82f6">77 days</text>
+                    <text x="525" y="50" font-size="13" font-weight="600" text-anchor="middle" fill="#10b981">114 days</text>
+                    <text x="275" y="225" font-size="12" text-anchor="middle">Cash Runway</text>
+                    <text x="525" y="225" font-size="12" text-anchor="middle">Liquidity Runway</text>
+                </svg>
+            </section>
+
+            <!-- KPI 6 -->
+            <section class="section">
+                <h2 class="section-title">KPI 6: Work Backlog Hours</h2>
+                <div class="info-box">
+                    <strong>📅 Frequency:</strong> Weekly | <strong>🎯 Target:</strong> 3-6 weeks per person<br>
+                    <strong>⚠️ Alert:</strong> ≥8 weeks per person = Overload (Consider Hiring)<br>
+                    <strong>📊 Built in:</strong> Airtable | <strong>🔗 Data Source:</strong> Monday.com (PM/drafter estimates per active job)
+                </div>
+                
+                <div class="key-change">
+                    <div class="key-change-title">FORMULAS:</div>
+                    <strong>Total Backlog:</strong> Σ Estimated Hours (all active jobs)<br>
+                    <strong>Backlog per Staff:</strong> Total Backlog ÷ Team Size<br>
+                    <strong>Weeks per Staff:</strong> Backlog per Staff ÷ 40 hours<br>
+                    <strong>Alert Trigger:</strong> If Backlog per Staff ≥ 8 weeks (320 hours) → Consider hiring
+                </div>
+                
+                <div style="background: #fef3c7; border-left: 4px solid #f59e0b; padding: 15px; margin: 15px 0; border-radius: 6px;">
+                    <strong style="color: #92400e;">Implementation Notes:</strong>
+                    <ul style="color: #7c2d12; margin: 8px 0 0 20px;">
+                        <li>Uses current manual estimation by PMs/drafters per active job</li>
+                        <li>Weekly trend tracking identifies capacity constraints early</li>
+                        <li>Standardize estimation method over time for consistency</li>
+                        <li><strong>Hiring Decision Trigger:</strong> ≥8 weeks per person = overloaded, time to recruit</li>
+                        <li><strong>Healthy Range:</strong> 3-6 weeks per person maintains steady workflow</li>
+                    </ul>
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Team / Staff</th>
+                            <th>Active Jobs</th>
+                            <th>Total Backlog</th>
+                            <th>Backlog/Staff</th>
+                            <th>Weeks/Staff</th>
+                            <th>Weekly Trend</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr style="background: #fef3c7; font-weight: 600;">
+                            <td><strong>DESIGN TEAM</strong></td>
+                            <td>15</td>
+                            <td>1,360 hrs</td>
+                            <td>340 hrs</td>
+                            <td><strong>8.5 weeks</strong></td>
+                            <td>↑ +80 hrs</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">🚨 OVERLOAD</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Alice</td>
+                            <td>5</td>
+                            <td>380 hrs</td>
+                            <td>380 hrs</td>
+                            <td>9.5 weeks</td>
+                            <td>↑ +40 hrs</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">Overload</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Bob</td>
+                            <td>4</td>
+                            <td>340 hrs</td>
+                            <td>340 hrs</td>
+                            <td>8.5 weeks</td>
+                            <td>↑ +30 hrs</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">Overload</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Elena</td>
+                            <td>4</td>
+                            <td>320 hrs</td>
+                            <td>320 hrs</td>
+                            <td>8.0 weeks</td>
+                            <td>→ Stable</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">At Limit</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Frank</td>
+                            <td>2</td>
+                            <td>320 hrs</td>
+                            <td>320 hrs</td>
+                            <td>8.0 weeks</td>
+                            <td>↑ +10 hrs</td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">At Limit</span></td>
+                        </tr>
+                        <tr style="background: #dbeafe; font-weight: 600;">
+                            <td><strong>DRAFTING TEAM</strong></td>
+                            <td>9</td>
+                            <td>820 hrs</td>
+                            <td>205 hrs</td>
+                            <td><strong>5.1 weeks</strong></td>
+                            <td>↑ +35 hrs</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Healthy</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Charlie</td>
+                            <td>3</td>
+                            <td>240 hrs</td>
+                            <td>240 hrs</td>
+                            <td>6.0 weeks</td>
+                            <td>↑ +20 hrs</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Good</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Diana</td>
+                            <td>2</td>
+                            <td>160 hrs</td>
+                            <td>160 hrs</td>
+                            <td>4.0 weeks</td>
+                            <td>→ Stable</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Good</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Grace</td>
+                            <td>2</td>
+                            <td>220 hrs</td>
+                            <td>220 hrs</td>
+                            <td>5.5 weeks</td>
+                            <td>↑ +10 hrs</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Good</span></td>
+                        </tr>
+                        <tr>
+                            <td style="padding-left: 30px;">Henry</td>
+                            <td>2</td>
+                            <td>200 hrs</td>
+                            <td>200 hrs</td>
+                            <td>5.0 weeks</td>
+                            <td>↑ +5 hrs</td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Good</span></td>
+                        </tr>
+                        <tr style="background: #f8f9ff; font-weight: 600;">
+                            <td><strong>COMPANY TOTAL</strong></td>
+                            <td>24</td>
+                            <td>2,180 hrs</td>
+                            <td>273 hrs</td>
+                            <td><strong>6.8 weeks</strong></td>
+                            <td>↑ +115 hrs</td>
+                            <td><span class="status-badge" style="background: #f59e0b; color: white;">⚠ Monitor</span></td>
+                        </tr>
+                        <tr style="background: #fee2e2;">
+                            <td colspan="7" style="padding: 12px 15px;">
+                                <strong style="color: #991b1b;">🚨 HIRING ALERT:</strong> 
+                                <span style="color: #7f1d1d; font-weight: 600;"> Design Team OVERLOADED</span> - 
+                                Team average (8.5 weeks) exceeds 8-week threshold. Consider hiring additional designer immediately. 
+                                Alice (9.5 wks), Bob (8.5 wks), Elena & Frank (8.0 wks each) all at or above capacity limit.
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <svg viewBox="0 0 800 300" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 8px; background: #fafafa; margin: 20px 0;">
+                    <text x="400" y="25" font-size="14" font-weight="600" text-anchor="middle" fill="#667eea">Work Backlog by Team (Weeks per Person)</text>
+                    <line x1="50" y1="250" x2="750" y2="250" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="50" y2="250" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="163" x2="750" y2="163" stroke="#10b981" stroke-width="2" stroke-dasharray="5,5"/>
+                    <line x1="50" y1="75" x2="750" y2="75" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5"/>
+                    <line x1="50" y1="100" x2="750" y2="100" stroke="#ef4444" stroke-width="3" stroke-dasharray="5,5"/>
+                    <text x="755" y="168" font-size="10" fill="#10b981">3 wks (min)</text>
+                    <text x="755" y="80" font-size="10" fill="#f59e0b">6 wks (max)</text>
+                    <text x="755" y="105" font-size="10" fill="#ef4444" font-weight="600">8 wks (ALERT)</text>
+                    <rect x="150" y="81" width="120" height="169" fill="#ef4444"/>
+                    <rect x="320" y="144" width="120" height="106" fill="#10b981"/>
+                    <rect x="490" y="121" width="120" height="129" fill="#f59e0b"/>
+                    <text x="210" y="66" font-size="13" font-weight="600" text-anchor="middle" fill="#ef4444">8.5 wks 🚨</text>
+                    <text x="380" y="129" font-size="13" font-weight="600" text-anchor="middle" fill="#10b981">5.1 wks</text>
+                    <text x="550" y="106" font-size="13" font-weight="600" text-anchor="middle" fill="#f59e0b">6.8 wks</text>
+                    <text x="210" y="275" font-size="12" text-anchor="middle">Design (OVERLOAD)</text>
+                    <text x="380" y="275" font-size="12" text-anchor="middle">Drafting</text>
+                    <text x="550" y="275" font-size="12" text-anchor="middle">Company</text>
+                </svg>
+                
+                <div style="margin-top: 20px;">
+                    <strong style="font-size: 1.1em; color: #667eea;">📈 Weekly Trend Chart (Last 4 Weeks):</strong>
+                    <svg viewBox="0 0 800 200" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 8px; background: #fafafa; margin-top: 10px;">
+                        <text x="400" y="25" font-size="13" font-weight="600" text-anchor="middle" fill="#667eea">Backlog Trend - Weeks per Staff</text>
+                        <line x1="80" y1="170" x2="750" y2="170" stroke="#333" stroke-width="2"/>
+                        <line x1="80" y1="40" x2="80" y2="170" stroke="#333" stroke-width="2"/>
+                        <line x1="80" y1="90" x2="750" y2="90" stroke="#ef4444" stroke-width="2" stroke-dasharray="3,3"/>
+                        <text x="60" y="95" font-size="10" fill="#ef4444" font-weight="600">8 wks</text>
+                        
+                        <!-- Design Team Line (showing increase to overload) -->
+                        <polyline points="150,120 300,110 450,95 600,80" fill="none" stroke="#f59e0b" stroke-width="3"/>
+                        <circle cx="150" cy="120" r="5" fill="#f59e0b"/>
+                        <circle cx="300" cy="110" r="5" fill="#f59e0b"/>
+                        <circle cx="450" cy="95" r="5" fill="#f59e0b"/>
+                        <circle cx="600" cy="80" r="6" fill="#ef4444" stroke="#ef4444" stroke-width="2"/>
+                        <text x="600" y="70" font-size="11" fill="#ef4444" font-weight="600">8.5w</text>
+                        
+                        <!-- Drafting Team Line (stable) -->
+                        <polyline points="150,135 300,133 450,130 600,128" fill="none" stroke="#3b82f6" stroke-width="3"/>
+                        <circle cx="150" cy="135" r="5" fill="#3b82f6"/>
+                        <circle cx="300" cy="133" r="5" fill="#3b82f6"/>
+                        <circle cx="450" cy="130" r="5" fill="#3b82f6"/>
+                        <circle cx="600" cy="128" r="5" fill="#3b82f6"/>
+                        <text x="600" y="118" font-size="11" fill="#3b82f6">5.1w</text>
+                        
+                        <!-- X-axis labels -->
+                        <text x="150" y="190" font-size="11" text-anchor="middle">Week -3</text>
+                        <text x="300" y="190" font-size="11" text-anchor="middle">Week -2</text>
+                        <text x="450" y="190" font-size="11" text-anchor="middle">Week -1</text>
+                        <text x="600" y="190" font-size="11" text-anchor="middle">Current</text>
+                        
+                        <!-- Legend -->
+                        <rect x="650" y="60" width="15" height="3" fill="#f59e0b"/>
+                        <text x="670" y="65" font-size="11" fill="#f59e0b">Design</text>
+                        <rect x="650" y="80" width="15" height="3" fill="#3b82f6"/>
+                        <text x="670" y="85" font-size="11" fill="#3b82f6">Drafting</text>
+                    </svg>
+                </div>                        <text x="670" y="85" font-size="11" fill="#3b82f6">Drafting</text>
+                    </svg>
+                </div>
+                
+                <div style="background: #fee2e2; border: 3px solid #ef4444; border-radius: 12px; padding: 20px; margin-top: 20px;">
+                    <strong style="color: #991b1b; font-size: 1.2em; display: block; margin-bottom: 12px;">🚨 Hiring Decision Framework:</strong>
+                    <table style="width: 100%; border-collapse: collapse;">
+                        <tr style="background: white;">
+                            <td style="padding: 10px; border: 1px solid #fecaca; width: 25%;"><strong>Range</strong></td>
+                            <td style="padding: 10px; border: 1px solid #fecaca; width: 25%;"><strong>Status</strong></td>
+                            <td style="padding: 10px; border: 1px solid #fecaca; width: 50%;"><strong>Action Required</strong></td>
+                        </tr>
+                        <tr style="background: #dcfce7;">
+                            <td style="padding: 10px; border: 1px solid #fecaca;">3-6 weeks</td>
+                            <td style="padding: 10px; border: 1px solid #fecaca;"><span class="status-badge" style="background: #10b981;">Healthy</span></td>
+                            <td style="padding: 10px; border: 1px solid #fecaca;">Normal operation - steady pipeline</td>
+                        </tr>
+                        <tr style="background: #fef3c7;">
+                            <td style="padding: 10px; border: 1px solid #fecaca;">6-8 weeks</td>
+                            <td style="padding: 10px; border: 1px solid #fecaca;"><span class="status-badge" style="background: #f59e0b;">Monitor</span></td>
+                            <td style="padding: 10px; border: 1px solid #fecaca;">Watch closely - prepare hiring pipeline</td>
+                        </tr>
+                        <tr style="background: #fee2e2;">
+                            <td style="padding: 10px; border: 1px solid #fecaca;"><strong>≥8 weeks</strong></td>
+                            <td style="padding: 10px; border: 1px solid #fecaca;"><span class="status-badge" style="background: #ef4444;">ALERT</span></td>
+                            <td style="padding: 10px; border: 1px solid #fecaca;"><strong>OVERLOAD - Begin hiring immediately</strong></td>
+                        </tr>
+                        <tr style="background: #fef3c7;">
+                            <td style="padding: 10px; border: 1px solid #fecaca;"><2 weeks</td>
+                            <td style="padding: 10px; border: 1px solid #fecaca;"><span class="status-badge" style="background: #f59e0b;">Low</span></td>
+                            <td style="padding: 10px; border: 1px solid #fecaca;">Pipeline concern - focus on sales/marketing</td>
+                        </tr>
+                    </table>
+                </div>
+            </section>
+
+            <!-- KPI 7 -->
+            <section class="section">
+                <h2 class="section-title">KPI 7: Proposal Win Rate</h2>
+                <div class="info-box">
+                    <strong>📅 Frequency:</strong> Monthly + YTD | <strong>🎯 Target:</strong> ≥60%<br>
+                    <strong>📊 Built in:</strong> Airtable | <strong>🔗 Data Source:</strong> GoHighLevel (temp: Google Sheet)
+                </div>
+                
+                <div class="key-change">
+                    <div class="key-change-title">FORMULA:</div>
+                    Won Proposals ÷ Total Proposals × 100<br>
+                    <strong>Segment by:</strong> Design vs Construction Management
+                </div>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Segment</th>
+                            <th>Total Proposals</th>
+                            <th>Won</th>
+                            <th>Lost</th>
+                            <th>Pending</th>
+                            <th>Win Rate %</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Design Services</strong></td>
+                            <td>42</td>
+                            <td>28</td>
+                            <td>10</td>
+                            <td>4</td>
+                            <td><strong>66.7%</strong></td>
+                            <td><span class="status-badge" style="background: #10b981; color: white;">Above Target</span></td>
+                        </tr>
+                        <tr>
+                            <td><strong>Construction Mgmt</strong></td>
+                            <td>35</td>
+                            <td>18</td>
+                            <td>14</td>
+                            <td>3</td>
+                            <td><strong>51.4%</strong></td>
+                            <td><span class="status-badge" style="background: #ef4444; color: white;">Below Target</span></td>
+                        </tr>
+                        <tr style="background: #f8f9ff; font-weight: 600;">
+                            <td><strong>COMPANY TOTAL</strong></td>
+                            <td>77</td>
+                            <td>46</td>
+                            <td>24</td>
+                            <td>7</td>
+                            <td><strong>59.7%</strong></td>
+                            <td><span class="status-badge" style="background: #f59e0b; color: white;">Near Target</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <svg viewBox="0 0 800 250" style="width: 100%; border: 2px solid #e5e7eb; border-radius: 8px; background: #fafafa; margin: 20px 0;">
+                    <text x="400" y="25" font-size="14" font-weight="600" text-anchor="middle" fill="#667eea">Monthly Proposal Win Rate by Segment</text>
+                    <line x1="50" y1="200" x2="750" y2="200" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="50" x2="50" y2="200" stroke="#333" stroke-width="2"/>
+                    <line x1="50" y1="110" x2="750" y2="110" stroke="#f59e0b" stroke-width="2" stroke-dasharray="5,5"/>
+                    <text x="755" y="115" font-size="11" fill="#f59e0b">60%</text>
+                    <rect x="150" y="100" width="150" height="100" fill="#10b981"/>
+                    <rect x="350" y="127" width="150" height="73" fill="#ef4444"/>
+                    <rect x="550" y="111" width="150" height="89" fill="#3b82f6"/>
+                    <text x="225" y="85" font-size="13" font-weight="600" text-anchor="middle" fill="#10b981">66.7%</text>
+                    <text x="425" y="112" font-size="13" font-weight="600" text-anchor="middle" fill="#ef4444">51.4%</text>
+                    <text x="625" y="96" font-size="13" font-weight="600" text-anchor="middle" fill="#3b82f6">59.7%</text>
+                    <text x="225" y="225" font-size="12" text-anchor="middle">Design</text>
+                    <text x="425" y="225" font-size="12" text-anchor="middle">Const Mgmt</text>
+                    <text x="625" y="225" font-size="12" text-anchor="middle">Company</text>
+                </svg>
+            </section>
+
+            <!-- Remaining KPIs Summary Table -->
+            <section class="section">
+                <h2 class="section-title">KPIs 8-11: Summary Specifications</h2>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>KPI</th>
+                            <th>Formula</th>
+                            <th>Frequency</th>
+                            <th>Data Source</th>
+                            <th>Target</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>8</strong></td>
+                            <td><strong>On-Time & On-Budget %</strong></td>
+                            <td>Projects meeting both targets ÷ Total</td>
+                            <td>Weekly + Monthly</td>
+                            <td>Monday + TrackIt</td>
+                            <td>≥80%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>9</strong></td>
+                            <td><strong>Change Order Rate</strong></td>
+                            <td>Σ CO Value ÷ Original Contract × 100</td>
+                            <td>Monthly + Close</td>
+                            <td>QBO + Monday</td>
+                            <td><15%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>10</strong></td>
+                            <td><strong>Marketing ROI</strong></td>
+                            <td>Attributed Revenue ÷ Marketing Spend</td>
+                            <td>Monthly</td>
+                            <td>GHL + QBO</td>
+                            <td>≥3:1</td>
+                        </tr>
+                        <tr>
+                            <td><strong>11</strong></td>
+                            <td><strong>Team Capacity Forecast</strong></td>
+                            <td>Planned Hours (30/60d) vs Available</td>
+                            <td>Weekly</td>
+                            <td>Monday + TrackIt</td>
+                            <td>80-95%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Dashboard Structure -->
+            <section class="section">
+                <h2 class="section-title">📱 Dashboard Structure</h2>
+                
+                <div class="comparison-grid">
+                    <div class="comparison-card" style="border-color: #10b981; background: #f0fdf4;">
+                        <div class="card-header" style="color: #10b981;">
+                            <div class="card-title">Tab 1: Weekly Ops Dashboard</div>
+                        </div>
+                        <div style="color: #065f46; line-height: 1.7;">
+                            <strong>Purpose:</strong> Monday morning meetings<br>
+                            <strong>Default:</strong> Last Week + MTD
+                            <ul style="margin: 10px 0 0 20px;">
+                                <li>Utilization Rate (team/individual)</li>
+                                <li>Billable Capacity (vs 40hr)</li>
+                                <li>Work Backlog Hours</li>
+                                <li>Team Capacity Forecast</li>
+                                <li>On-Time & On-Budget %</li>
+                                <li>Proposal Win Rate (snapshot)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="comparison-card" style="border-color: #3b82f6; background: #eff6ff;">
+                        <div class="card-header" style="color: #3b82f6;">
+                            <div class="card-title">Tab 2: Monthly/Quarterly Review</div>
+                        </div>
+                        <div style="color: #1e3a8a; line-height: 1.7;">
+                            <strong>Purpose:</strong> Strategic & financial<br>
+                            <strong>Timing:</strong> Month-close + quarterly
+                            <ul style="margin: 10px 0 0 20px;">
+                                <li>Utilization Trend (monthly)</li>
+                                <li>EBR (rolling 90-day)</li>
+                                <li>Gross Margin % (by project)</li>
+                                <li>Cash/Liquidity Runway</li>
+                                <li>Change Order Rate</li>
+                                <li>Proposal Win Rate (detail)</li>
+                                <li>Marketing ROI</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <strong style="display: block; color: #1e40af; font-size: 1.2em; margin-bottom: 10px;">Tab 3: Project-Close / Job Costing</strong>
+                    <p>Triggered at project completion:</p>
+                    <ul style="margin-left: 20px;">
+                        <li>EBR (project-level)</li>
+                        <li>Gross Margin (vs target)</li>
+                        <li>On-Time & On-Budget</li>
+                        <li>Change Order Summary</li>
+                        <li>Hours Breakdown (estimated vs actual)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Implementation Priorities -->
+            <section class="section">
+                <h2 class="section-title">🎯 Implementation Priorities</h2>
+                
+                <div style="background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border: 3px solid #10b981; border-radius: 15px; padding: 25px; margin: 25px 0;">
+                    <div style="color: #065f46; font-size: 1.4em; font-weight: 600; margin-bottom: 15px;">✅ Phase 1: Quick Wins (Weeks 1-2)</div>
+                    <div style="color: #065f46; line-height: 1.8;">
+                        <strong>Leverage existing infrastructure:</strong>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li>✅ Utilization (Database sheet)</li>
+                            <li>✅ Gross Margin (Job Costing)</li>
+                            <li>✅ Change Orders (consolidate 2 scripts)</li>
+                            <li>🆕 Billable Capacity (new metric)</li>
+                            <li>🆕 <40hr alerts</li>
+                            <li>🆕 Backlog per person view</li>
+                        </ul>
+                        <div style="margin-top: 15px; padding: 12px; background: white; border-radius: 6px;">
+                            <strong>Deliverable:</strong> Weekly Dashboard functional with 6/11 KPIs
+                        </div>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border: 3px solid #f59e0b; border-radius: 15px; padding: 25px; margin: 25px 0;">
+                    <div style="color: #92400e; font-size: 1.4em; font-weight: 600; margin-bottom: 15px;">🔥 Phase 2: QBO Integration (Weeks 3-4)</div>
+                    <div style="color: #7c2d12; line-height: 1.8;">
+                        <div style="padding: 12px; background: white; border-radius: 6px; border: 2px solid #ef4444; margin-bottom: 15px;">
+                            <strong style="color: #991b1b;">CRITICAL BLOCKER:</strong> QuickBooks API must work for 4 KPIs (EBR, Cash Runway, Gross Margin validation, Marketing ROI spend)
+                        </div>
+                        <strong>Action Items:</strong>
+                        <ol style="margin-left: 25px;">
+                            <li>Sean explores QBO API endpoints</li>
+                            <li>Map revenue to projects</li>
+                            <li>Test 90-day data extraction</li>
+                            <li>Build CSV fallback if needed</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border: 3px solid #3b82f6; border-radius: 15px; padding: 25px; margin: 25px 0;">
+                    <div style="color: #1e40af; font-size: 1.4em; font-weight: 600; margin-bottom: 15px;">🚀 Phase 3: Full Build (Weeks 5-10)</div>
+                    <div style="color: #1e3a8a; line-height: 1.8;">
+                        <strong>Complete all 11 KPIs:</strong>
+                        <ul style="margin: 10px 0 0 20px;">
+                            <li><strong>Weeks 5-6:</strong> TrackIt API + Proposal form + Weekly polish</li>
+                            <li><strong>Weeks 7-8:</strong> EBR calculator + Cash runway + Monthly dashboard</li>
+                            <li><strong>Weeks 9-10:</strong> Marketing ROI + Project-close view + 2024 backfill</li>
+                        </ul>
+                        <div style="margin-top: 15px; padding: 12px; background: white; border-radius: 6px;">
+                            <strong>Target Launch:</strong> December 2025 - All dashboards automated
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Key Decisions -->
+            <section class="section">
+                <h2 class="section-title">✅ Key Decisions (Oct 16 Meeting)</h2>
+                
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th>Decision Point</th>
+                            <th>Final Decision</th>
+                            <th>Impact</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>Utilization vs Capacity</strong></td>
+                            <td>TWO metrics: Utilization (textbook) + Billable Capacity (operational)</td>
+                            <td>Resolves Matt's mental block - both views available</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Utilization Denominator</strong></td>
+                            <td>Billable + Non-billable (actual tracked) for ALL staff</td>
+                            <td>Standardizes across hourly/salaried</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Utilization Target</strong></td>
+                            <td>89% (40 billable ÷ 45 total)</td>
+                            <td>Based on 40 billable + 5 admin expectation</td>
+                        </tr>
+                        <tr>
+                            <td><strong>EBR Frequency</strong></td>
+                            <td>Rolling 90-day company + project-close only</td>
+                            <td>Weekly misleading due to deposit timing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Change Orders</strong></td>
+                            <td>MUST stay separate from base contracts</td>
+                            <td>Critical for spotting poor estimates</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Dashboard Structure</strong></td>
+                            <td>3 tabs: Weekly Ops, Monthly/Quarterly, Project-Close</td>
+                            <td>Separates operational from strategic from job-costing</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Historical Backfill</strong></td>
+                            <td>2024 minimum; 2023 optional</td>
+                            <td>Provides YoY comparison baseline</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Summary -->
+            <div style="text-align: center; padding: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; margin-top: 50px; border-radius: 15px;">
+                <h2 style="font-size: 2em; margin-bottom: 20px;">🎯 Bottom Line</h2>
+                <p style="font-size: 1.2em; line-height: 1.8; max-width: 900px; margin: 0 auto 25px;">
+                    Oct 16 meeting resolved utilization confusion by splitting into two metrics. Clear formulas, data sources, and dashboard structure finalized.
+                </p>
+                
+                <div style="background: rgba(255,255,255,0.2); padding: 25px; border-radius: 12px; margin: 25px auto; max-width: 800px;">
+                    <p style="font-size: 1.15em; margin-bottom: 15px;"><strong>📊 Final Count:</strong></p>
+                    <p style="font-size: 1.05em; line-height: 1.7;">
+                        <strong>11 KPIs total</strong> (Utilization + Capacity separate)<br>
+                        <strong>6 KPIs</strong> ready for Phase 1<br>
+                        <strong>4 KPIs</strong> blocked by QuickBooks<br>
+                        <strong>1 KPI</strong> needs definition
+                    </p>
+                </div>
+                
+                <div style="background: rgba(255,255,255,0.2); padding: 25px; border-radius: 12px; margin: 25px auto; max-width: 800px;">
+                    <p style="font-size: 1.15em; margin-bottom: 15px;"><strong>🚨 Critical Next Step:</strong></p>
+                    <p style="font-size: 1.05em; line-height: 1.7;">
+                        <strong>QuickBooks API Validation</strong><br>
+                        Must confirm revenue, cash, AR, expenses accessible<br>
+                        Unlocks 36% of dashboard functionality
+                    </p>
+                </div>
+                
+                <p style="font-size: 1.3em; margin-top: 25px; font-weight: 600;">🎉 Target: December 2025</p>
+                <p style="font-size: 1em; opacity: 0.9; margin-top: 12px;">All 11 KPIs | 3 dashboards | Historical to 2024</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
